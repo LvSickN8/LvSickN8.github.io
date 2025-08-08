@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LvSickN8的后花园</title>
+  <style>
+    body {
+      background-color: #f3e8f9; /* 柔和淡紫色背景 */
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 15px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header img {
+      width: 30px;
+      height: 30px;
+    }
+    header h1 {
+      font-size: 1.2em;
+      text-align: center;
+      flex: 1;
+      margin: 0;
+    }
+    .menu {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      padding: 3px 0;
+    }
+    .menu div {
+      width: 100%;
+      height: 3px;
+      background-color: #333;
+      border-radius: 2px;
+    }
+    .card {
+      background: #fff;
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    }
+    .card-title {
+      font-size: 1.1em;
+      font-weight: bold;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+    .card-title::after {
+      content: "";
+      display: block;
+      height: 3px;
+      background-color: green;
+      width: calc(var(--title-length) * 1em);
+      margin-top: 3px;
+    }
+    .item-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .item {
+      display: flex;
+      align-items: center;
+      background: #f7eafa; /* 更协调的淡紫背景 */
+      border-radius: 25px;
+      padding: 5px 10px;
+      text-decoration: none;
+      color: #333;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .item:hover {
+      background: #e9d9f5;
+      transform: translateY(-2px);
+    }
+    .item img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .item-name {
+      font-weight: 500;
+    }
+    footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #555;
+      padding: 15px 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg" alt="Telegram 图标" />
+  <h1>LvSickN8的后花园</h1>
+  <div class="menu" aria-label="菜单" role="button" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+</header>
+
+<!-- 联系人 -->
+<section class="card" aria-labelledby="contacts-title">
+  <h2 class="card-title" id="contacts-title" style="--title-length:3;">联系人</h2>
+  <div class="item-list">
+    <a class="item" href="https://t.me/ShuYue_NingX" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/ShuYue_NingX.jpg" alt="舒悦柠 头像" />
+      <div class="item-name">舒悦柠</div>
+    </a>
+    <a class="item" href="https://t.me/IceOrZh" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/IceOrZh.jpg" alt="张冰冰 头像" />
+      <div class="item-name">张冰冰</div>
+    </a>
+    <a class="item" href="https://t.me/LiAnYil" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/LiAnYil.jpg" alt="李思妍 头像" />
+      <div class="item-name">李思妍</div>
+    </a>
+    <a class="item" href="https://t.me/YMTiny" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/YMTiny.jpg" alt="虞美婷 头像" />
+      <div class="item-name">虞美婷</div>
+    </a>
+    <a class="item" href="https://t.me/LiTinSy" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/LiTinSy.jpg" alt="沈丽婷 头像" />
+      <div class="item-name">沈丽婷</div>
+    </a>
+    <a class="item" href="https://t.me/InxJie" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/InxJie.jpg" alt="林欣洁 头像" />
+      <div class="item-name">林欣洁</div>
+    </a>
+    <a class="item" href="https://t.me/EnyunS" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/EnyunS.jpg" alt="沈芸 头像" />
+      <div class="item-name">沈芸</div>
+    </a>
+    <a class="item" href="https://t.me/Xluoy" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/Xluoy.jpg" alt="徐璐 头像" />
+      <div class="item-name">徐璐</div>
+    </a>
+  </div>
+</section>
+
+<!-- 群组 -->
+<section class="card" aria-labelledby="groups-title">
+  <h2 class="card-title" id="groups-title" style="--title-length:2;">群组</h2>
+  <div class="item-list">
+    <a class="item" href="https://t.me/examplegroup1" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup1.jpg" alt="群组1" />
+      <div class="item-name">群组1</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup2" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup2.jpg" alt="群组2" />
+      <div class="item-name">群组2</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup3" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup3.jpg" alt="群组3" />
+      <div class="item-name">群组3</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup4" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup4.jpg" alt="群组4" />
+      <div class="item-name">群组4</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup5" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup5.jpg" alt="群组5" />
+      <div class="item-name">群组5</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup6" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup6.jpg" alt="群组6" />
+      <div class="item-name">群组6</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup7" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup7.jpg" alt="群组7" />
+      <div class="item-name">群组7</div>
+    </a>
+    <a class="item" href="https://t.me/examplegroup8" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplegroup8.jpg" alt="群组8" />
+      <div class="item-name">群组8</div>
+    </a>
+  </div>
+</section>
+
+<!-- 频道 -->
+<section class="card" aria-labelledby="channels-title">
+  <h2 class="card-title" id="channels-title" style="--title-length:2;">频道</h2>
+  <div class="item-list">
+    <a class="item" href="https://t.me/examplechannel1" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel1.jpg" alt="频道1" />
+      <div class="item-name">频道1</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel2" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel2.jpg" alt="频道2" />
+      <div class="item-name">频道2</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel3" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel3.jpg" alt="频道3" />
+      <div class="item-name">频道3</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel4" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel4.jpg" alt="频道4" />
+      <div class="item-name">频道4</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel5" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel5.jpg" alt="频道5" />
+      <div class="item-name">频道5</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel6" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel6.jpg" alt="频道6" />
+      <div class="item-name">频道6</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel7" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel7.jpg" alt="频道7" />
+      <div class="item-name">频道7</div>
+    </a>
+    <a class="item" href="https://t.me/examplechannel8" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplechannel8.jpg" alt="频道8" />
+      <div class="item-name">频道8</div>
+    </a>
+  </div>
+</section>
+
+<!-- NSFW -->
+<section class="card" aria-labelledby="nsfw-title">
+  <h2 class="card-title" id="nsfw-title" style="--title-length:4;">NSFW</h2>
+  <div class="item-list">
+    <a class="item" href="https://t.me/examplensfw1" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw1.jpg" alt="NSFW1" />
+      <div class="item-name">NSFW1</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw2" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw2.jpg" alt="NSFW2" />
+      <div class="item-name">NSFW2</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw3" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw3.jpg" alt="NSFW3" />
+      <div class="item-name">NSFW3</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw4" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw4.jpg" alt="NSFW4" />
+      <div class="item-name">NSFW4</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw5" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw5.jpg" alt="NSFW5" />
+      <div class="item-name">NSFW5</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw6" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw6.jpg" alt="NSFW6" />
+      <div class="item-name">NSFW6</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw7" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw7.jpg" alt="NSFW7" />
+      <div class="item-name">NSFW7</div>
+    </a>
+    <a class="item" href="https://t.me/examplensfw8" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplensfw8.jpg" alt="NSFW8" />
+      <div class="item-name">NSFW8</div>
+    </a>
+  </div>
+</section>
+
+<!-- 软件 -->
+<section class="card" aria-labelledby="software-title">
+  <h2 class="card-title" id="software-title" style="--title-length:2;">软件</h2>
+  <div class="item-list">
+    <a class="item" href="https://t.me/examplesoftware1" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware1.jpg" alt="软件1" />
+      <div class="item-name">软件1</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware2" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware2.jpg" alt="软件2" />
+      <div class="item-name">软件2</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware3" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware3.jpg" alt="软件3" />
+      <div class="item-name">软件3</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware4" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware4.jpg" alt="软件4" />
+      <div class="item-name">软件4</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware5" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware5.jpg" alt="软件5" />
+      <div class="item-name">软件5</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware6" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware6.jpg" alt="软件6" />
+      <div class="item-name">软件6</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware7" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware7.jpg" alt="软件7" />
+      <div class="item-name">软件7</div>
+    </a>
+    <a class="item" href="https://t.me/examplesoftware8" target="_blank" rel="noopener">
+      <img src="https://t.me/i/userpic/320/examplesoftware8.jpg" alt="软件8" />
+      <div class="item-name">软件8</div>
+    </a>
+  </div>
+</section>
+
+<!-- 页脚版权声明 -->
+<footer>
+  &copy; 2025 LvSickN8. 保留所有权利.
+</footer>
+
+</body>
+</html>

@@ -1,282 +1,527 @@
-import React, { useState } from "react";
-
-// --- 数据配置区域 ---
-// 你可以在这里添加、删除或修改联系人信息。
-// 每个联系人包含 telegram 用户名（username），显示名（displayName）和备注（note）
-const initialContacts = [
-  { username: "telegram", displayName: "Telegram", note: "Official" },
-  { username: "durov", displayName: "Pavel Durov", note: "Founder" },
-  { username: "example1", displayName: "Alice 美", note: "Friend" },
-  { username: "example2", displayName: "Bob 工程师", note: "Dev" },
-  { username: "example3", displayName: "Cathy", note: "Support" },
-  { username: "example4", displayName: "David", note: "PM" },
-  { username: "example5", displayName: "Eve", note: "QA" },
-  { username: "example6", displayName: "Frank", note: "Ops" },
-  { username: "example7", displayName: "Grace", note: "UX" },
-  { username: "example8", displayName: "Heidi", note: "Design" },
-];
-
-// 群组信息，同样可以添加、删除、修改
-const initialGroups = [
-  { username: "telegramgroup1", displayName: "Dev Group" },
-  { username: "telegramgroup2", displayName: "Announce" },
-  { username: "telegramgroup3", displayName: "Friends" },
-];
-
-// 软件库信息，分 PC / Android / IOS 三大类，每个类别中是若干个软件文件
-const initialLibrary = {
-  PC: [
-    {
-      title: "Tooling-v1.0.zip",
-      url: "https://github.com/yourname/yourrepo/releases/download/v1.0/tooling.zip",
-    },
-    {
-      title: "SetupGuide.pdf",
-      url: "https://github.com/yourname/yourrepo/raw/main/docs/SetupGuide.pdf",
-    },
-  ],
-  Android: [
-    {
-      title: "app-release.apk",
-      url: "https://github.com/yourname/yourrepo/releases/download/v1.0/app-release.apk",
-    },
-  ],
-  IOS: [
-    {
-      title: "iOS-Notes.txt",
-      url: "https://github.com/yourname/yourrepo/raw/main/ios/notes.txt",
-    },
-  ],
-};
-
-// ---------------------------------------------
-// 头像组件，负责显示每个联系人的头像
-// 会尝试从 telegram 头像地址拉取图片，失败则显示首字母代替头像
-function Avatar({ username, size = 64, alt }) {
-  // telegram头像地址，用户名替换
-  const src = `https://t.me/i/userpic/320/${username}.jpg`;
-
-  // 如果头像加载失败，则显示昵称或用户名的前两个字母
-  const initials = (alt || username || "?").slice(0, 2).toUpperCase();
-
-  // React hook，用来判断头像是否加载出错
-  const [errored, setErrored] = useState(false);
-
-  // 头像加载失败时显示首字母代替头像
-  if (errored || !username) {
-    return (
-      <div
-        className="flex items-center justify-center rounded-md border bg-gray-100 text-xl font-semibold"
-        style={{ width: size, height: size }}
-      >
-        {initials}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LvSickN8的后花园</title>
+  <style>
+    /* --- 重置和基础样式 --- */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: linear-gradient(to bottom, #fff, #f9fafb);
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    button {
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      font-family: inherit;
+      color: inherit;
+      text-align: left;
+    }
+    /* --- 容器 --- */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    header h1 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin: 0;
+    }
+    header p {
+      color: #6b7280;
+      margin-top: 0.25rem;
+      font-size: 0.875rem;
+    }
+    /* 搜索框 */
+    #searchInput {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      width: 250px;
+      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+      transition: border-color 0.15s ease-in-out;
+    }
+    #searchInput:focus {
+      outline: none;
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgb(37 99 235 / 0.3);
+    }
+    /* 使用说明链接 */
+    #howtoLink {
+      font-size: 0.875rem;
+      color: #4b5563;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    #howtoLink:hover {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    /* --- 版块标题 --- */
+    section {
+      margin-bottom: 3rem;
+    }
+    section h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    /* --- 卡片容器网格 --- */
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+    /* 联系人使用四列，群组三列，软件库三列响应式 */
+    #contactsGrid {
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    }
+    #groupsGrid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    #libraryGrid {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+    /* --- 联系人和群组卡片 --- */
+    .card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .card:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-4px);
+    }
+    .card img.avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 0.5rem;
+      object-fit: cover;
+      border: 1px solid #d1d5db;
+      flex-shrink: 0;
+      background: #f3f4f6;
+      font-weight: 700;
+      font-size: 24px;
+      color: #6b7280;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    .card .info {
+      flex: 1;
+    }
+    .card .info .name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #111827;
+    }
+    .card .info .username {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+    .card .info .note {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      margin-top: 0.25rem;
+    }
+    .card .action {
+      font-size: 0.75rem;
+      color: #9ca3af;
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+    .card:hover .action {
+      color: #2563eb;
+    }
+    /* --- 软件库子版块 --- */
+    .library-category {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 1rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      min-width: 0;
+    }
+    .library-category .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .library-category .title {
+      font-weight: 600;
+      font-size: 1.125rem;
+    }
+    .library-category .count {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+    .library-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 1rem;
+      padding: 0.5rem 1rem;
+      transition: box-shadow 0.2s ease;
+      color: #111827;
+    }
+    .library-item:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-decoration: none;
+    }
+    .library-item .icon {
+      width: 48px;
+      height: 48px;
+      background: #f9fafb;
+      border-radius: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 20px;
+      color: #6b7280;
+      flex-shrink: 0;
+      user-select: none;
+    }
+    .library-item .text {
+      flex: 1;
+      overflow: hidden;
+    }
+    .library-item .text .title {
+      font-weight: 600;
+      font-size: 1rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.15rem;
+    }
+    .library-item .text .url {
+      font-size: 0.75rem;
+      color: #6b7280;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .library-item .action {
+      font-size: 0.75rem;
+      color: #6b7280;
+      user-select: none;
+    }
+    /* --- 页脚 --- */
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      font-size: 0.875rem;
+      color: #6b7280;
+      border-top: 1px solid #e5e7eb;
+      user-select: none;
+    }
+    /* --- 响应式 --- */
+    @media (max-width: 640px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      #searchInput {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 页头 -->
+    <header>
+      <div>
+        <h1>LvSickN8的后花园</h1>
+        <p>扁平化 · 精致卡片 · 轻量部署到 GitHub Pages</p>
       </div>
-    );
-  }
-
-  // 头像正常显示
-  return (
-    <img
-      src={src}
-      alt={alt || username}
-      width={size}
-      height={size}
-      className="rounded-md object-cover border"
-      onError={() => setErrored(true)} // 头像加载失败则切换到首字母显示
-    />
-  );
-}
-
-// 主组件
-export default function TelegramLandingPage() {
-  // 把配置的联系人、群组、软件库放入React状态，方便后期动态修改
-  const [contacts, setContacts] = useState(initialContacts);
-  const [groups, setGroups] = useState(initialGroups);
-  const [library] = useState(initialLibrary);
-  const [query, setQuery] = useState(""); // 搜索框输入内容
-
-  // 点击联系人或群组时打开对应telegram页面
-  function openTelegram(username) {
-    const url = `https://t.me/${username}`;
-    window.open(url, "_blank", "noopener,noreferrer");
-  }
-
-  // 根据搜索内容过滤联系人或群组列表
-  function filtered(list) {
-    if (!query.trim()) return list; // 搜索为空则返回全部
-    const q = query.toLowerCase();
-    return list.filter(
-      (i) =>
-        (i.displayName && i.displayName.toLowerCase().includes(q)) ||
-        (i.username && i.username.toLowerCase().includes(q))
-    );
-  }
-
-  return (
-    // 整体页面背景和布局
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 py-12 px-6 flex flex-col">
-      {/* 最大宽度容器，内容部分 */}
-      <div className="max-w-6xl mx-auto flex-grow">
-        {/* 页面头部，标题和搜索框 */}
-        <header className="mb-8 flex items-center justify-between">
-          <div>
-            {/* 网站主标题，已改为 LvSickN8的后花园 */}
-            <h1 className="text-3xl font-extrabold">LvSickN8的后花园</h1>
-            {/* 副标题说明 */}
-            <p className="text-sm text-gray-500 mt-1">
-              扁平化 · 精致卡片 · 轻量部署到 GitHub Pages
-            </p>
-          </div>
-
-          {/* 搜索输入框和“使用说明”链接 */}
-          <div className="flex items-center gap-4">
-            <input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="搜索姓名或用户名..."
-              className="rounded-md border px-3 py-2 shadow-sm w-64 text-sm"
-            />
-            <a
-              className="text-sm underline hover:no-underline text-gray-600"
-              href="#howto"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-              }}
-            >
-              使用说明
-            </a>
-          </div>
-        </header>
-
-        {/* --- 联系人板块 --- */}
-        <section className="mb-10">
-          {/* 板块标题 */}
-          <h2 className="text-xl font-semibold mb-4">联系人</h2>
-
-          {/* 联系人列表，响应式网格布局 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {/* 遍历联系人数据渲染每个联系人卡片 */}
-            {filtered(contacts).map((c) => (
-              <button
-                key={c.username}
-                onClick={() => openTelegram(c.username)} // 点击跳转telegram用户主页
-                className="group flex items-center gap-4 rounded-2xl border p-4 bg-white hover:shadow-lg transform hover:-translate-y-1 transition-all duration-150 text-left"
-              >
-                {/* 头像组件 */}
-                <div className="w-16 h-16 flex-shrink-0">
-                  <Avatar username={c.username} size={64} alt={c.displayName} />
-                </div>
-
-                {/* 文字信息部分 */}
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      {/* 显示昵称 */}
-                      <div className="font-medium text-gray-900">{c.displayName}</div>
-                      {/* 显示 telegram 用户名 */}
-                      <div className="text-xs text-gray-500">@{c.username}</div>
-                    </div>
-
-                    {/* 鼠标悬停时显示“打开” */}
-                    <div className="text-xs text-gray-400 group-hover:text-blue-600">打开</div>
-                  </div>
-
-                  {/* 备注信息 */}
-                  {c.note && <div className="mt-2 text-sm text-gray-500">{c.note}</div>}
-                </div>
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {/* --- 群组板块 --- */}
-        <section className="mb-10">
-          {/* 板块标题 */}
-          <h2 className="text-xl font-semibold mb-4">群组</h2>
-
-          {/* 群组列表，响应式网格 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {filtered(groups).map((g) => (
-              <a
-                key={g.username}
-                href={`https://t.me/${g.username}`} // 群组点击跳转链接
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-3 rounded-xl border p-3 bg-white hover:shadow-md transition-all"
-              >
-                {/* 群组头像 */}
-                <div className="w-12 h-12 flex-shrink-0">
-                  <Avatar username={g.username} size={48} alt={g.displayName} />
-                </div>
-
-                {/* 群组文字 */}
-                <div className="flex-1">
-                  <div className="font-medium">{g.displayName}</div>
-                  <div className="text-xs text-gray-400">@{g.username}</div>
-                </div>
-
-                {/* 鼠标悬停显示加入 */}
-                <div className="text-sm text-gray-400 group-hover:text-blue-600">加入</div>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* --- 软件库板块 --- */}
-        <section className="mb-16">
-          {/* 板块标题 */}
-          <h2 className="text-xl font-semibold mb-4">软件库</h2>
-
-          {/* 软件类别分三列 */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* 遍历三个分类（PC, Android, IOS） */}
-            {Object.entries(library).map(([category, items]) => (
-              <div key={category} className="rounded-2xl border bg-white p-4">
-                {/* 类别标题和数量 */}
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <div className="text-lg font-semibold">{category}</div>
-                    <div className="text-xs text-gray-400">{items.length} 项</div>
-                  </div>
-                </div>
-
-                {/* 类别下的文件列表 */}
-                <div className="space-y-3">
-                  {items.map((it, idx) => (
-                    <a
-                      key={idx}
-                      href={it.url} // 点击下载链接
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-3 rounded-xl border p-3 hover:shadow-sm transition-all"
-                    >
-                      {/* 左侧类别首字母图标 */}
-                      <div className="w-12 h-12 flex-shrink-0 rounded-md bg-gray-50 flex items-center justify-center font-medium text-xs">
-                        {category[0]}
-                      </div>
-
-                      {/* 文件标题和链接 */}
-                      <div className="flex-1 text-left">
-                        <div className="font-medium">{it.title}</div>
-                        <div className="text-xs text-gray-400 truncate">{it.url}</div>
-                      </div>
-
-                      {/* 右侧下载提示 */}
-                      <div className="text-sm text-gray-500">下载</div>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+      <div>
+        <input
+          id="searchInput"
+          type="text"
+          placeholder="搜索姓名或用户名..."
+          aria-label="搜索"
+          oninput="filterAll()"
+        />
       </div>
+    </header>
 
-      {/* 页脚版权信息 */}
-      <footer className="border-t pt-4 text-center text-gray-500 text-sm select-none">
-        © LvSickN8
-      </footer>
-    </div>
-  );
-}
+    <!-- 联系人版块 -->
+    <section id="contactsSection">
+      <h2>联系人</h2>
+      <div id="contactsGrid" class="grid"></div>
+    </section>
+
+    <!-- 群组版块 -->
+    <section id="groupsSection">
+      <h2>群组</h2>
+      <div id="groupsGrid" class="grid"></div>
+    </section>
+
+    <!-- 软件库版块 -->
+    <section id="librarySection">
+      <h2>软件库</h2>
+      <div id="libraryGrid" class="grid"></div>
+    </section>
+  </div>
+
+  <!-- 页脚 -->
+  <footer>© LvSickN8</footer>
+
+  <script>
+    // --- 数据部分：联系人 ---
+    const contacts = [
+      { username: "telegram", displayName: "Telegram", note: "Official" },
+      { username: "durov", displayName: "Pavel Durov", note: "Founder" },
+      { username: "example1", displayName: "Alice 美", note: "Friend" },
+      { username: "example2", displayName: "Bob 工程师", note: "Dev" },
+      { username: "example3", displayName: "Cathy", note: "Support" },
+      { username: "example4", displayName: "David", note: "PM" },
+      { username: "example5", displayName: "Eve", note: "QA" },
+      { username: "example6", displayName: "Frank", note: "Ops" },
+      { username: "example7", displayName: "Grace", note: "UX" },
+      { username: "example8", displayName: "Heidi", note: "Design" },
+    ];
+
+    // --- 数据部分：群组 ---
+    const groups = [
+      { username: "telegramgroup1", displayName: "Dev Group" },
+      { username: "telegramgroup2", displayName: "Announce" },
+      { username: "telegramgroup3", displayName: "Friends" },
+    ];
+
+    // --- 数据部分：软件库 ---
+    const library = {
+      PC: [
+        {
+          title: "Tooling-v1.0.zip",
+          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/tooling.zip",
+        },
+        {
+          title: "SetupGuide.pdf",
+          url: "https://github.com/yourname/yourrepo/raw/main/docs/SetupGuide.pdf",
+        },
+      ],
+      Android: [
+        {
+          title: "app-release.apk",
+          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/app-release.apk",
+        },
+      ],
+      IOS: [
+        {
+          title: "iOS-Notes.txt",
+          url: "https://github.com/yourname/yourrepo/raw/main/ios/notes.txt",
+        },
+      ],
+    };
+
+    // 创建头像元素，尝试加载 Telegram 头像，失败显示首字母
+    function createAvatar(username, altText, size = 64) {
+      const img = document.createElement("img");
+      img.className = "avatar";
+      img.width = size;
+      img.height = size;
+      img.alt = altText || username;
+
+      // Telegram头像URL格式
+      img.src = `https://t.me/i/userpic/320/${username}.jpg`;
+
+      // 出错时显示首字母替代头像
+      img.onerror = () => {
+        const fallback = document.createElement("div");
+        fallback.className = "avatar";
+        fallback.style.width = size + "px";
+        fallback.style.height = size + "px";
+        fallback.style.borderRadius = "0.5rem";
+        fallback.style.backgroundColor = "#f3f4f6";
+        fallback.style.color = "#6b7280";
+        fallback.style.fontWeight = "700";
+        fallback.style.fontSize = "24px";
+        fallback.style.display = "flex";
+        fallback.style.alignItems = "center";
+        fallback.style.justifyContent = "center";
+        fallback.style.userSelect = "none";
+        fallback.textContent = (altText || username || "?").slice(0, 2).toUpperCase();
+        img.replaceWith(fallback);
+      };
+
+      return img;
+    }
+
+    // 渲染联系人列表
+    function renderContacts(list) {
+      const container = document.getElementById("contactsGrid");
+      container.innerHTML = "";
+      list.forEach(({ username, displayName, note }) => {
+        const btn = document.createElement("button");
+        btn.className = "card";
+        btn.onclick = () => window.open(`https://t.me/${username}`, "_blank", "noopener");
+
+        // 头像
+        btn.appendChild(createAvatar(username, displayName, 64));
+
+        // 信息部分
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "name";
+        nameDiv.textContent = displayName;
+        info.appendChild(nameDiv);
+
+        const usernameDiv = document.createElement("div");
+        usernameDiv.className = "username";
+        usernameDiv.textContent = "@" + username;
+        info.appendChild(usernameDiv);
+
+        if (note) {
+          const noteDiv = document.createElement("div");
+          noteDiv.className = "note";
+          noteDiv.textContent = note;
+          info.appendChild(noteDiv);
+        }
+
+        btn.appendChild(info);
+
+        // 右侧动作提示
+        const action = document.createElement("div");
+        action.className = "action";
+        action.textContent = "打开";
+        btn.appendChild(action);
+
+        container.appendChild(btn);
+      });
+    }
+
+    // 渲染群组列表
+    function renderGroups(list) {
+      const container = document.getElementById("groupsGrid");
+      container.innerHTML = "";
+      list.forEach(({ username, displayName }) => {
+        const a = document.createElement("a");
+        a.className = "card";
+        a.href = `https://t.me/${username}`;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+
+        // 头像
+        a.appendChild(createAvatar(username, displayName, 48));
+
+        // 信息部分
+        const info = document.createElement("div");
+        info.className = "info";
+
+        const nameDiv = document.createElement("div");
+        nameDiv.className = "name";
+        nameDiv.textContent = displayName;
+        info.appendChild(nameDiv);
+
+        const usernameDiv = document.createElement("div");
+        usernameDiv.className = "username";
+        usernameDiv.textContent = "@" + username;
+        info.appendChild(usernameDiv);
+
+        a.appendChild(info);
+
+        // 右侧动作提示
+        const action = document.createElement("div");
+        action.className = "action";
+        action.textContent = "加入";
+        a.appendChild(action);
+
+        container.appendChild(a);
+      });
+    }
+
+    // 渲染软件库
+    function renderLibrary(lib) {
+      const container = document.getElementById("libraryGrid");
+      container.innerHTML = "";
+
+      for (const category in lib) {
+        const catDiv = document.createElement("div");
+        catDiv.className = "library-category";
+
+        // 标题栏
+        const titleRow = document.createElement("div");
+        titleRow.className = "title-row";
+
+        const title = document.createElement("div");
+        title.className = "title";
+        title.textContent = category;
+        titleRow.appendChild(title);
+
+        const count = document.createElement("div");
+        count.className = "count";
+        count.textContent = lib[category].length + " 项";
+        titleRow.appendChild(count);
+
+        catDiv.appendChild(titleRow);
+
+        // 文件列表
+        lib[category].forEach(({ title, url }) => {
+          const a = document.createElement("a");
+          a.className = "library-item";
+          a.href = url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+
+          // 类别首字母图标
+          const icon = document.createElement("div");
+          icon.className = "icon";
+          icon.textContent = category.charAt(0);
+          a.appendChild(icon);
+
+          // 文字
+          const text = document.createElement("div");
+          text.className = "text";
+
+          const titleDiv = document.createElement("div");
+          titleDiv.className = "title";
+          titleDiv.textContent = title;
+          text.appendChild(titleDiv);
+
+          const urlDiv = document.createElement("div");
+          urlDiv

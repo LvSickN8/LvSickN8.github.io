@@ -1,527 +1,72 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LvSickN8的后花园</title>
   <style>
-    /* --- 重置和基础样式 --- */
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0; padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background: linear-gradient(to bottom, #fff, #f9fafb);
-      color: #111827;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-    button {
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      font-family: inherit;
-      color: inherit;
-      text-align: left;
-    }
-    /* --- 容器 --- */
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2rem 1rem 4rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    header h1 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      margin: 0;
-    }
-    header p {
-      color: #6b7280;
-      margin-top: 0.25rem;
-      font-size: 0.875rem;
-    }
-    /* 搜索框 */
-    #searchInput {
-      padding: 0.5rem 0.75rem;
-      border: 1px solid #d1d5db;
-      border-radius: 0.375rem;
-      font-size: 0.875rem;
-      width: 250px;
-      box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
-      transition: border-color 0.15s ease-in-out;
-    }
-    #searchInput:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgb(37 99 235 / 0.3);
-    }
-    /* 使用说明链接 */
-    #howtoLink {
-      font-size: 0.875rem;
-      color: #4b5563;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-    #howtoLink:hover {
-      color: #2563eb;
-      text-decoration: none;
-    }
-    /* --- 版块标题 --- */
-    section {
-      margin-bottom: 3rem;
-    }
-    section h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
-    /* --- 卡片容器网格 --- */
-    .grid {
-      display: grid;
-      gap: 1rem;
-    }
-    /* 联系人使用四列，群组三列，软件库三列响应式 */
-    #contactsGrid {
-      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-    }
-    #groupsGrid {
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-    #libraryGrid {
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
-    /* --- 联系人和群组卡片 --- */
-    .card {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 1rem;
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      box-shadow: 0 0 0 rgba(0,0,0,0);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
-    .card:hover {
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-      transform: translateY(-4px);
-    }
-    .card img.avatar {
-      width: 64px;
-      height: 64px;
-      border-radius: 0.5rem;
-      object-fit: cover;
-      border: 1px solid #d1d5db;
-      flex-shrink: 0;
-      background: #f3f4f6;
-      font-weight: 700;
-      font-size: 24px;
-      color: #6b7280;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      user-select: none;
-    }
-    .card .info {
-      flex: 1;
-    }
-    .card .info .name {
-      font-weight: 600;
-      font-size: 1rem;
-      color: #111827;
-    }
-    .card .info .username {
-      font-size: 0.75rem;
-      color: #6b7280;
-    }
-    .card .info .note {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      margin-top: 0.25rem;
-    }
-    .card .action {
-      font-size: 0.75rem;
-      color: #9ca3af;
-      user-select: none;
-      transition: color 0.2s ease;
-    }
-    .card:hover .action {
-      color: #2563eb;
-    }
-    /* --- 软件库子版块 --- */
-    .library-category {
-      background: white;
-      border: 1px solid #e5e7eb;
-      border-radius: 1rem;
-      padding: 1rem 1.25rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-      min-width: 0;
-    }
-    .library-category .title-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
-    }
-    .library-category .title {
-      font-weight: 600;
-      font-size: 1.125rem;
-    }
-    .library-category .count {
-      font-size: 0.75rem;
-      color: #6b7280;
-    }
-    .library-item {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      border: 1px solid #e5e7eb;
-      border-radius: 1rem;
-      padding: 0.5rem 1rem;
-      transition: box-shadow 0.2s ease;
-      color: #111827;
-    }
-    .library-item:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      text-decoration: none;
-    }
-    .library-item .icon {
-      width: 48px;
-      height: 48px;
-      background: #f9fafb;
-      border-radius: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      font-size: 20px;
-      color: #6b7280;
-      flex-shrink: 0;
-      user-select: none;
-    }
-    .library-item .text {
-      flex: 1;
-      overflow: hidden;
-    }
-    .library-item .text .title {
-      font-weight: 600;
-      font-size: 1rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-bottom: 0.15rem;
-    }
-    .library-item .text .url {
-      font-size: 0.75rem;
-      color: #6b7280;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .library-item .action {
-      font-size: 0.75rem;
-      color: #6b7280;
-      user-select: none;
-    }
-    /* --- 页脚 --- */
-    footer {
-      text-align: center;
-      padding: 1rem 0;
-      font-size: 0.875rem;
-      color: #6b7280;
-      border-top: 1px solid #e5e7eb;
-      user-select: none;
-    }
-    /* --- 响应式 --- */
-    @media (max-width: 640px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      #searchInput {
-        width: 100%;
-      }
-    }
+    body { margin:0; padding:0; font-family: sans-serif; line-height:1.6; background:#fff; color:#333; }
+    .container { max-width:800px; margin:0 auto; padding:2rem 1rem; }
+    h1 { font-size:2rem; margin-bottom:1rem; }
+    nav { margin-bottom:2rem; }
+    nav a { margin-right:1rem; color:#555; text-decoration:none; font-weight:500; }
+    nav a:hover { color:#000; }
+    section { margin-bottom:2rem; }
+    section h2 { font-size:1.25rem; margin-bottom:0.5rem; border-bottom:2px solid #ddd; padding-bottom:0.25rem; }
+    ul { list-style:none; padding:0; margin:0; }
+    li { margin:0.5rem 0; }
+    a.item { color:#0066cc; text-decoration:none; }
+    a.item:hover { text-decoration:underline; }
+    footer { text-align:center; font-size:0.875rem; color:#777; border-top:1px solid #eee; padding-top:1rem; margin-top:2rem; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- 页头 -->
-    <header>
-      <div>
-        <h1>LvSickN8的后花园</h1>
-        <p>扁平化 · 精致卡片 · 轻量部署到 GitHub Pages</p>
-      </div>
-      <div>
-        <input
-          id="searchInput"
-          type="text"
-          placeholder="搜索姓名或用户名..."
-          aria-label="搜索"
-          oninput="filterAll()"
-        />
-      </div>
-    </header>
+    <h1>LvSickN8的后花园</h1>
+    <!-- 顶部导航 -->
+    <nav>
+      <a href="#contacts">联系人</a>
+      <a href="#groups">群组</a>
+      <a href="#library">软件库</a>
+    </nav>
 
-    <!-- 联系人版块 -->
-    <section id="contactsSection">
+    <!-- 联系人部分 -->
+    <section id="contacts">
       <h2>联系人</h2>
-      <div id="contactsGrid" class="grid"></div>
+      <ul>
+        <li><a class="item" href="https://t.me/telegram" target="_blank">Telegram (@telegram) — Official</a></li>
+        <!-- 可继续添加更多联系人 -->
+      </ul>
     </section>
 
-    <!-- 群组版块 -->
-    <section id="groupsSection">
+    <!-- 群组部分 -->
+    <section id="groups">
       <h2>群组</h2>
-      <div id="groupsGrid" class="grid"></div>
+      <ul>
+        <li><a class="item" href="https://t.me/telegramgroup1" target="_blank">Dev Group (@telegramgroup1)</a></li>
+        <!-- 更多群组 -->
+      </ul>
     </section>
 
-    <!-- 软件库版块 -->
-    <section id="librarySection">
+    <!-- 软件库部分 -->
+    <section id="library">
       <h2>软件库</h2>
-      <div id="libraryGrid" class="grid"></div>
+      <h3>PC</h3>
+      <ul>
+        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">Tooling-v1.0.zip</a></li>
+        <!-- 更多 PC 文件 -->
+      </ul>
+      <h3>Android</h3>
+      <ul>
+        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">app-release.apk</a></li>
+      </ul>
+      <h3>IOS</h3>
+      <ul>
+        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">iOS-Notes.txt</a></li>
+      </ul>
     </section>
+
+    <footer>© LvSickN8</footer>
   </div>
-
-  <!-- 页脚 -->
-  <footer>© LvSickN8</footer>
-
-  <script>
-    // --- 数据部分：联系人 ---
-    const contacts = [
-      { username: "telegram", displayName: "Telegram", note: "Official" },
-      { username: "durov", displayName: "Pavel Durov", note: "Founder" },
-      { username: "example1", displayName: "Alice 美", note: "Friend" },
-      { username: "example2", displayName: "Bob 工程师", note: "Dev" },
-      { username: "example3", displayName: "Cathy", note: "Support" },
-      { username: "example4", displayName: "David", note: "PM" },
-      { username: "example5", displayName: "Eve", note: "QA" },
-      { username: "example6", displayName: "Frank", note: "Ops" },
-      { username: "example7", displayName: "Grace", note: "UX" },
-      { username: "example8", displayName: "Heidi", note: "Design" },
-    ];
-
-    // --- 数据部分：群组 ---
-    const groups = [
-      { username: "telegramgroup1", displayName: "Dev Group" },
-      { username: "telegramgroup2", displayName: "Announce" },
-      { username: "telegramgroup3", displayName: "Friends" },
-    ];
-
-    // --- 数据部分：软件库 ---
-    const library = {
-      PC: [
-        {
-          title: "Tooling-v1.0.zip",
-          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/tooling.zip",
-        },
-        {
-          title: "SetupGuide.pdf",
-          url: "https://github.com/yourname/yourrepo/raw/main/docs/SetupGuide.pdf",
-        },
-      ],
-      Android: [
-        {
-          title: "app-release.apk",
-          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/app-release.apk",
-        },
-      ],
-      IOS: [
-        {
-          title: "iOS-Notes.txt",
-          url: "https://github.com/yourname/yourrepo/raw/main/ios/notes.txt",
-        },
-      ],
-    };
-
-    // 创建头像元素，尝试加载 Telegram 头像，失败显示首字母
-    function createAvatar(username, altText, size = 64) {
-      const img = document.createElement("img");
-      img.className = "avatar";
-      img.width = size;
-      img.height = size;
-      img.alt = altText || username;
-
-      // Telegram头像URL格式
-      img.src = `https://t.me/i/userpic/320/${username}.jpg`;
-
-      // 出错时显示首字母替代头像
-      img.onerror = () => {
-        const fallback = document.createElement("div");
-        fallback.className = "avatar";
-        fallback.style.width = size + "px";
-        fallback.style.height = size + "px";
-        fallback.style.borderRadius = "0.5rem";
-        fallback.style.backgroundColor = "#f3f4f6";
-        fallback.style.color = "#6b7280";
-        fallback.style.fontWeight = "700";
-        fallback.style.fontSize = "24px";
-        fallback.style.display = "flex";
-        fallback.style.alignItems = "center";
-        fallback.style.justifyContent = "center";
-        fallback.style.userSelect = "none";
-        fallback.textContent = (altText || username || "?").slice(0, 2).toUpperCase();
-        img.replaceWith(fallback);
-      };
-
-      return img;
-    }
-
-    // 渲染联系人列表
-    function renderContacts(list) {
-      const container = document.getElementById("contactsGrid");
-      container.innerHTML = "";
-      list.forEach(({ username, displayName, note }) => {
-        const btn = document.createElement("button");
-        btn.className = "card";
-        btn.onclick = () => window.open(`https://t.me/${username}`, "_blank", "noopener");
-
-        // 头像
-        btn.appendChild(createAvatar(username, displayName, 64));
-
-        // 信息部分
-        const info = document.createElement("div");
-        info.className = "info";
-
-        const nameDiv = document.createElement("div");
-        nameDiv.className = "name";
-        nameDiv.textContent = displayName;
-        info.appendChild(nameDiv);
-
-        const usernameDiv = document.createElement("div");
-        usernameDiv.className = "username";
-        usernameDiv.textContent = "@" + username;
-        info.appendChild(usernameDiv);
-
-        if (note) {
-          const noteDiv = document.createElement("div");
-          noteDiv.className = "note";
-          noteDiv.textContent = note;
-          info.appendChild(noteDiv);
-        }
-
-        btn.appendChild(info);
-
-        // 右侧动作提示
-        const action = document.createElement("div");
-        action.className = "action";
-        action.textContent = "打开";
-        btn.appendChild(action);
-
-        container.appendChild(btn);
-      });
-    }
-
-    // 渲染群组列表
-    function renderGroups(list) {
-      const container = document.getElementById("groupsGrid");
-      container.innerHTML = "";
-      list.forEach(({ username, displayName }) => {
-        const a = document.createElement("a");
-        a.className = "card";
-        a.href = `https://t.me/${username}`;
-        a.target = "_blank";
-        a.rel = "noopener noreferrer";
-
-        // 头像
-        a.appendChild(createAvatar(username, displayName, 48));
-
-        // 信息部分
-        const info = document.createElement("div");
-        info.className = "info";
-
-        const nameDiv = document.createElement("div");
-        nameDiv.className = "name";
-        nameDiv.textContent = displayName;
-        info.appendChild(nameDiv);
-
-        const usernameDiv = document.createElement("div");
-        usernameDiv.className = "username";
-        usernameDiv.textContent = "@" + username;
-        info.appendChild(usernameDiv);
-
-        a.appendChild(info);
-
-        // 右侧动作提示
-        const action = document.createElement("div");
-        action.className = "action";
-        action.textContent = "加入";
-        a.appendChild(action);
-
-        container.appendChild(a);
-      });
-    }
-
-    // 渲染软件库
-    function renderLibrary(lib) {
-      const container = document.getElementById("libraryGrid");
-      container.innerHTML = "";
-
-      for (const category in lib) {
-        const catDiv = document.createElement("div");
-        catDiv.className = "library-category";
-
-        // 标题栏
-        const titleRow = document.createElement("div");
-        titleRow.className = "title-row";
-
-        const title = document.createElement("div");
-        title.className = "title";
-        title.textContent = category;
-        titleRow.appendChild(title);
-
-        const count = document.createElement("div");
-        count.className = "count";
-        count.textContent = lib[category].length + " 项";
-        titleRow.appendChild(count);
-
-        catDiv.appendChild(titleRow);
-
-        // 文件列表
-        lib[category].forEach(({ title, url }) => {
-          const a = document.createElement("a");
-          a.className = "library-item";
-          a.href = url;
-          a.target = "_blank";
-          a.rel = "noopener noreferrer";
-
-          // 类别首字母图标
-          const icon = document.createElement("div");
-          icon.className = "icon";
-          icon.textContent = category.charAt(0);
-          a.appendChild(icon);
-
-          // 文字
-          const text = document.createElement("div");
-          text.className = "text";
-
-          const titleDiv = document.createElement("div");
-          titleDiv.className = "title";
-          titleDiv.textContent = title;
-          text.appendChild(titleDiv);
-
-          const urlDiv = document.createElement("div");
-          urlDiv
+</body>
+</html>

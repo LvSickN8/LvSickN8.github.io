@@ -1,16 +1,294 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的测试网页</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <h1>你好，GitHub Pages！</h1>
-    <p>这是我的第一个测试网页 🎉</p>
-    <button onclick="sayHello()">点我试试</button>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>优雅的个人站 — GitHub Pages 模板</title>
+  <meta name="description" content="漂亮、响应式、单页的 GitHub Pages 个人站模板 — 支持暗色模式、项目展示、博客摘要和联系方式。">
 
-    <script src="script.js"></script>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root{--bg:#0f172a;--card:#0b1220;--muted:#94a3b8}
+    html,body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+    /* Custom utilities */
+    .glass{backdrop-filter: blur(8px) saturate(130%); background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.04)}
+    .accent-gradient{background:linear-gradient(90deg,#7c3aed,#06b6d4)}
+    /* smooth anchor scroll */
+    html{scroll-behavior:smooth}
+    /* subtle floating animation for hero */
+    @keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-8px)}100%{transform:translateY(0)}}
+    .floaty{animation:floaty 6s ease-in-out infinite}
+    /* project hover */
+    .proj-hover:hover{transform:translateY(-6px) scale(1.01); box-shadow:0 10px 30px rgba(2,6,23,0.6)}
+  </style>
+</head>
+<body class="bg-[radial-gradient(ellipse_at_top_left,_var(--bg),_#071124)] text-slate-100 leading-relaxed">
+  <!-- top nav -->
+  <header class="sticky top-0 z-40 backdrop-blur-md glass px-6 py-3">
+    <div class="max-w-6xl mx-auto flex items-center justify-between gap-4">
+      <a href="#home" class="flex items-center gap-3 no-underline">
+        <div class="w-10 h-10 rounded-xl accent-gradient p-1">
+          <div class="w-full h-full bg-[rgba(255,255,255,0.06)] rounded-lg flex items-center justify-center font-bold">PB</div>
+        </div>
+        <div>
+          <div class="text-sm font-semibold">小兵 包</div>
+          <div class="text-xs text-slate-400">开发者 • 作品集</div>
+        </div>
+      </a>
+
+      <nav class="hidden md:flex gap-6 items-center text-sm">
+        <a href="#about" class="hover:text-white/90">关于</a>
+        <a href="#projects" class="hover:text-white/90">项目</a>
+        <a href="#blog" class="hover:text-white/90">博客</a>
+        <a href="#contact" class="hover:text-white/90">联系</a>
+        <button id="themeToggle" class="ml-1 px-3 py-1 rounded-md glass text-sm">切换主题</button>
+      </nav>
+
+      <div class="md:hidden">
+        <button id="mobileBtn" aria-label="菜单" class="p-2 glass rounded-md">☰</button>
+      </div>
+    </div>
+
+    <!-- mobile menu -->
+    <div id="mobileMenu" class="md:hidden max-w-6xl mx-auto mt-3 hidden">
+      <div class="flex flex-col gap-2 text-sm">
+        <a href="#about" class="block px-3 py-2 rounded-md">关于</a>
+        <a href="#projects" class="block px-3 py-2 rounded-md">项目</a>
+        <a href="#blog" class="block px-3 py-2 rounded-md">博客</a>
+        <a href="#contact" class="block px-3 py-2 rounded-md">联系</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- hero -->
+  <main id="home" class="max-w-6xl mx-auto px-6 py-16">
+    <section class="grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <p class="text-sm text-slate-400">你好，我是</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight">小兵 包 <span class="text-transparent bg-clip-text accent-gradient">—— 前端工程师 & 开源爱好者</span></h1>
+        <p class="mt-4 text-slate-300 max-w-2xl">我构建优雅的界面、可维护的前端架构，喜欢将复杂问题拆解成简单的组件。欢迎查看我的项目和博客。</p>
+
+        <div class="mt-6 flex gap-3">
+          <a href="#projects" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/6 hover:bg-white/8">查看项目 →</a>
+          <a href="#contact" class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass">联系我</a>
+        </div>
+
+        <div class="mt-6 flex gap-3 text-sm text-slate-400">
+          <div class="flex items-center gap-2">🔭 当前: 个人站重构</div>
+          <div class="flex items-center gap-2">⭐ GitHub: <a href="#" class="text-slate-200 underline">tgnav</a></div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="floaty w-full max-w-md mx-auto">
+          <div class="rounded-2xl glass p-6">
+            <div class="w-full h-44 rounded-lg bg-gradient-to-br from-slate-800 via-slate-900 to-slate-700 flex items-center justify-center">
+              <div class="text-center">
+                <div class="text-sm text-slate-400">最新项目</div>
+                <div class="mt-2 text-lg font-semibold">任务看板 · 可拖拽</div>
+                <div class="mt-1 text-xs text-slate-400">React + DnD + LocalStorage</div>
+              </div>
+            </div>
+            <div class="mt-4 flex gap-3">
+              <div class="flex-1 text-xs text-slate-300">简洁、响应、支持移动端。使用 TypeScript + ESBuild 打包。</div>
+              <a href="#projects" class="self-center text-sm">查看</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- about -->
+    <section id="about" class="mt-16">
+      <div class="grid md:grid-cols-3 gap-6 items-start">
+        <div class="md:col-span-2">
+          <h2 class="text-2xl font-semibold">关于我</h2>
+          <p class="mt-3 text-slate-300 max-w-3xl">我专注于前端性能和用户体验，熟悉现代前端工具链（Vite/ESBuild）、TypeScript、React/Vue。喜欢写小工具、参与开源和分享技术文章。</p>
+
+          <div class="mt-6 grid sm:grid-cols-2 gap-4">
+            <div class="p-4 rounded-lg glass">
+              <div class="text-sm text-slate-400">经验</div>
+              <div class="mt-2 font-medium">5 年前端开发</div>
+            </div>
+            <div class="p-4 rounded-lg glass">
+              <div class="text-sm text-slate-400">擅长</div>
+              <div class="mt-2 font-medium">React, TypeScript, 性能优化</div>
+            </div>
+            <div class="p-4 rounded-lg glass">
+              <div class="text-sm text-slate-400">工具</div>
+              <div class="mt-2 font-medium">Git, Docker, CI/CD</div>
+            </div>
+            <div class="p-4 rounded-lg glass">
+              <div class="text-sm text-slate-400">开源</div>
+              <div class="mt-2 font-medium">贡献者 & 项目维护者</div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="p-4 rounded-xl glass text-sm">
+          <div class="font-semibold">联系信息</div>
+          <div class="mt-3 text-slate-300">📍 Singapore</div>
+          <div class="mt-1 text-slate-300">✉️ <a href="mailto:you@example.com" class="underline">you@example.com</a></div>
+          <div class="mt-4">
+            <a href="#" class="block text-xs underline">GitHub</a>
+            <a href="#" class="block text-xs underline">LinkedIn</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- projects -->
+    <section id="projects" class="mt-16">
+      <h2 class="text-2xl font-semibold">精选项目</h2>
+      <p class="mt-2 text-slate-400 text-sm">部分开源 & 个人项目，点击可查看详情或源码。</p>
+
+      <div class="mt-6 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- project card -->
+        <article class="p-4 rounded-xl glass proj-hover transition-transform duration-200">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold">任务看板</h3>
+              <div class="text-xs text-slate-400 mt-1">React, Drag & Drop, LocalStorage</div>
+            </div>
+            <div class="text-sm text-slate-300">⭐ 1.2k</div>
+          </div>
+          <p class="mt-3 text-sm text-slate-300">一个轻量级看板，支持列拖拽、卡片排序、离线缓存，移动端友好。</p>
+          <div class="mt-4 flex gap-2 text-xs">
+            <a class="px-3 py-1 rounded-full glass" href="#">演示</a>
+            <a class="px-3 py-1 rounded-full glass" href="#">源码</a>
+          </div>
+        </article>
+
+        <article class="p-4 rounded-xl glass proj-hover transition-transform duration-200">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold">静态站点生成器</h3>
+              <div class="text-xs text-slate-400 mt-1">Vite, Markdown, 插件式</div>
+            </div>
+            <div class="text-sm text-slate-300">⭐ 820</div>
+          </div>
+          <p class="mt-3 text-sm text-slate-300">用 Markdown 构建博客、内置搜索、部署到 GitHub Pages 非常方便。</p>
+          <div class="mt-4 flex gap-2 text-xs">
+            <a class="px-3 py-1 rounded-full glass" href="#">演示</a>
+            <a class="px-3 py-1 rounded-full glass" href="#">源码</a>
+          </div>
+        </article>
+
+        <article class="p-4 rounded-xl glass proj-hover transition-transform duration-200">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <h3 class="font-semibold">组件库</h3>
+              <div class="text-xs text-slate-400 mt-1">React + TypeScript</div>
+            </div>
+            <div class="text-sm text-slate-300">⭐ 540</div>
+          </div>
+          <p class="mt-3 text-sm text-slate-300">一套小而精的可复用 UI 组件，注重可访问性与主题化。</p>
+          <div class="mt-4 flex gap-2 text-xs">
+            <a class="px-3 py-1 rounded-full glass" href="#">演示</a>
+            <a class="px-3 py-1 rounded-full glass" href="#">源码</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- blog -->
+    <section id="blog" class="mt-16">
+      <h2 class="text-2xl font-semibold">最新博客</h2>
+      <div class="mt-4 grid md:grid-cols-2 gap-6">
+        <article class="p-4 rounded-lg glass">
+          <h3 class="font-semibold">前端性能优化实战</h3>
+          <p class="mt-2 text-slate-300 text-sm">在这篇文章中，我将分享 8 个在真实项目中验证过的性能优化方法，包含测量、懒加载、和资源优先级策略。</p>
+          <div class="mt-3 text-xs text-slate-400">2025-07-12 · 阅读 8 min</div>
+        </article>
+
+        <article class="p-4 rounded-lg glass">
+          <h3 class="font-semibold">用 TypeScript 构建安全的 API 客户端</h3>
+          <p class="mt-2 text-slate-300 text-sm">如何把 API 返回类型变成可组合的客户端类型，并在开发时避免一类重大错误。</p>
+          <div class="mt-3 text-xs text-slate-400">2025-06-02 · 阅读 6 min</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- contact -->
+    <section id="contact" class="mt-16 mb-20">
+      <h2 class="text-2xl font-semibold">联系我</h2>
+      <div class="mt-4 grid md:grid-cols-2 gap-6">
+        <form onsubmit="event.preventDefault(); sendMessage();" class="p-6 rounded-lg glass">
+          <label class="text-sm text-slate-300">姓名</label>
+          <input id="name" class="w-full mt-2 p-2 rounded-md bg-transparent border border-slate-700" required />
+          <label class="text-sm text-slate-300 mt-3 block">邮箱</label>
+          <input id="email" type="email" class="w-full mt-2 p-2 rounded-md bg-transparent border border-slate-700" required />
+          <label class="text-sm text-slate-300 mt-3 block">消息</label>
+          <textarea id="message" rows="4" class="w-full mt-2 p-2 rounded-md bg-transparent border border-slate-700" required></textarea>
+          <div class="mt-4">
+            <button type="submit" class="px-4 py-2 rounded-md accent-gradient">发送消息</button>
+          </div>
+        </form>
+
+        <div class="p-6 rounded-lg glass">
+          <div class="font-semibold">其他方式</div>
+          <p class="mt-2 text-slate-300 text-sm">或通过邮箱直接联系： <a href="mailto:you@example.com" class="underline">you@example.com</a></p>
+          <div class="mt-4 text-sm text-slate-400">我通常在工作日内 24-48 小时内回复。</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-white/4 py-6 mt-6">
+    <div class="max-w-6xl mx-auto px-6 text-sm text-slate-400 flex flex-col md:flex-row justify-between items-center">
+      <div>© <span id="year"></span> 小兵 包 — 构建于 GitHub Pages</div>
+      <div class="mt-3 md:mt-0">Designed with ❤️ · <a href="#" class="underline">Source</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // mobile menu
+    const mobileBtn = document.getElementById('mobileBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileBtn.addEventListener('click', ()=> mobileMenu.classList.toggle('hidden'));
+
+    // theme toggle (dark/light) using localStorage
+    const themeToggle = document.getElementById('themeToggle');
+    const root = document.documentElement;
+    const current = localStorage.getItem('pref-theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    setTheme(current);
+    themeToggle.addEventListener('click', ()=>{
+      const next = (document.documentElement.getAttribute('data-theme')||'dark') === 'dark' ? 'light' : 'dark';
+      setTheme(next);
+      localStorage.setItem('pref-theme', next);
+    });
+    function setTheme(mode){
+      if(mode === 'light'){
+        document.documentElement.setAttribute('data-theme','light');
+        document.body.classList.remove('bg-[radial-gradient(ellipse_at_top_left,_var(--bg),_#071124)]');
+        document.body.style.background = 'linear-gradient(180deg,#f8fafc,#eef2ff)';
+        document.body.style.color = '#0f172a';
+      }else{
+        document.documentElement.setAttribute('data-theme','dark');
+        document.body.style.background = '';
+        document.body.classList.add('bg-[radial-gradient(ellipse_at_top_left,_var(--bg),_#071124)]');
+        document.body.style.color = '';
+      }
+    }
+
+    // fake send message (demo)
+    function sendMessage(){
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+      // For GitHub Pages, there's no server — suggest using formback services or GitHub Actions + issue creation.
+      alert('感谢，' + name + '！消息已准备发送（示例）。\n建议部署时用 Formspree / Netlify Forms / GitHub Actions + Issues 来接收消息。');
+      // reset
+      document.getElementById('name').value='';
+      document.getElementById('email').value='';
+      document.getElementById('message').value='';
+    }
+  </script>
 </body>
 </html>

@@ -1,72 +1,427 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LvSickN8的后花园</title>
   <style>
-    body { margin:0; padding:0; font-family: sans-serif; line-height:1.6; background:#fff; color:#333; }
-    .container { max-width:800px; margin:0 auto; padding:2rem 1rem; }
-    h1 { font-size:2rem; margin-bottom:1rem; }
-    nav { margin-bottom:2rem; }
-    nav a { margin-right:1rem; color:#555; text-decoration:none; font-weight:500; }
-    nav a:hover { color:#000; }
-    section { margin-bottom:2rem; }
-    section h2 { font-size:1.25rem; margin-bottom:0.5rem; border-bottom:2px solid #ddd; padding-bottom:0.25rem; }
-    ul { list-style:none; padding:0; margin:0; }
-    li { margin:0.5rem 0; }
-    a.item { color:#0066cc; text-decoration:none; }
-    a.item:hover { text-decoration:underline; }
-    footer { text-align:center; font-size:0.875rem; color:#777; border-top:1px solid #eee; padding-top:1rem; margin-top:2rem; }
+    /* 基础样式 */
+    body {
+      margin: 0; padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+        Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      background: #fefefe;
+      color: #222;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem 4rem;
+      flex-grow: 1;
+    }
+    h1 {
+      font-weight: 800;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #111;
+    }
+    nav {
+      margin-bottom: 2rem;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      text-decoration: none;
+      color: #666;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+      user-select: none;
+    }
+    nav a:hover,
+    nav a:focus {
+      color: #0078d4;
+      background-color: #e0f0ff;
+      outline: none;
+    }
+
+    section {
+      margin-bottom: 3rem;
+    }
+    section h2 {
+      font-weight: 700;
+      font-size: 1.25rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+    }
+
+    /* 卡片网格 */
+    .grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+
+    /* 卡片样式 */
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.07);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      transition: box-shadow 0.3s ease, transform 0.15s ease;
+      user-select: none;
+      text-decoration: none;
+      color: inherit;
+    }
+    .card:hover,
+    .card:focus {
+      box-shadow: 0 6px 16px rgb(0 0 0 / 0.12);
+      transform: translateY(-4px);
+      outline: none;
+    }
+
+    /* 头像 */
+    .avatar {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: #e5e7eb;
+      color: #6b7280;
+      font-weight: 700;
+      font-size: 28px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      user-select: none;
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    /* 文字信息 */
+    .info {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .info .name {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #111;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .info .username {
+      font-size: 0.85rem;
+      color: #6b7280;
+      user-select: text;
+    }
+    .info .note {
+      font-size: 0.8rem;
+      color: #9ca3af;
+    }
+
+    /* 动作提示 */
+    .action {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      user-select: none;
+      white-space: nowrap;
+      transition: color 0.3s;
+    }
+    .card:hover .action,
+    .card:focus .action {
+      color: #0078d4;
+    }
+
+    /* 页脚 */
+    footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #777;
+      border-top: 1px solid #eee;
+      padding: 1rem 0;
+      user-select: none;
+    }
+
+    /* 响应式微调 */
+    @media (max-width: 500px) {
+      .card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .avatar {
+        width: 56px;
+        height: 56px;
+      }
+      .action {
+        margin-top: 0.5rem;
+        align-self: flex-end;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>LvSickN8的后花园</h1>
-    <!-- 顶部导航 -->
     <nav>
       <a href="#contacts">联系人</a>
       <a href="#groups">群组</a>
       <a href="#library">软件库</a>
     </nav>
 
-    <!-- 联系人部分 -->
+    <!-- 联系人 -->
     <section id="contacts">
       <h2>联系人</h2>
-      <ul>
-        <li><a class="item" href="https://t.me/telegram" target="_blank">Telegram (@telegram) — Official</a></li>
-        <!-- 可继续添加更多联系人 -->
-      </ul>
+      <div class="grid" id="contactsGrid">
+        <!-- JS 会插入联系人卡片 -->
+      </div>
     </section>
 
-    <!-- 群组部分 -->
+    <!-- 群组 -->
     <section id="groups">
       <h2>群组</h2>
-      <ul>
-        <li><a class="item" href="https://t.me/telegramgroup1" target="_blank">Dev Group (@telegramgroup1)</a></li>
-        <!-- 更多群组 -->
-      </ul>
+      <div class="grid" id="groupsGrid">
+        <!-- JS 会插入群组卡片 -->
+      </div>
     </section>
 
-    <!-- 软件库部分 -->
+    <!-- 软件库 -->
     <section id="library">
       <h2>软件库</h2>
-      <h3>PC</h3>
-      <ul>
-        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">Tooling-v1.0.zip</a></li>
-        <!-- 更多 PC 文件 -->
-      </ul>
-      <h3>Android</h3>
-      <ul>
-        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">app-release.apk</a></li>
-      </ul>
-      <h3>IOS</h3>
-      <ul>
-        <li><a class="item" href="https://github.com/yourname/yourrepo/releases/latest">iOS-Notes.txt</a></li>
-      </ul>
+      <div class="grid" id="libraryGrid">
+        <!-- JS 会插入软件卡片 -->
+      </div>
     </section>
-
-    <footer>© LvSickN8</footer>
   </div>
+
+  <footer>© LvSickN8</footer>
+
+  <script>
+    // 数据定义，方便修改
+    const contacts = [
+      { username: "telegram", displayName: "Telegram", note: "Official" },
+      { username: "durov", displayName: "Pavel Durov", note: "Founder" },
+      { username: "example1", displayName: "Alice 美", note: "Friend" },
+      { username: "example2", displayName: "Bob 工程师", note: "Dev" },
+      { username: "example3", displayName: "Cathy", note: "Support" },
+      { username: "example4", displayName: "David", note: "PM" },
+      { username: "example5", displayName: "Eve", note: "QA" },
+      { username: "example6", displayName: "Frank", note: "Ops" },
+      { username: "example7", displayName: "Grace", note: "UX" },
+      { username: "example8", displayName: "Heidi", note: "Design" },
+    ];
+
+    const groups = [
+      { username: "telegramgroup1", displayName: "Dev Group" },
+      { username: "telegramgroup2", displayName: "Announce" },
+      { username: "telegramgroup3", displayName: "Friends" },
+    ];
+
+    const library = {
+      PC: [
+        {
+          title: "Tooling-v1.0.zip",
+          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/tooling.zip",
+        },
+        {
+          title: "SetupGuide.pdf",
+          url: "https://github.com/yourname/yourrepo/raw/main/docs/SetupGuide.pdf",
+        },
+      ],
+      Android: [
+        {
+          title: "app-release.apk",
+          url: "https://github.com/yourname/yourrepo/releases/download/v1.0/app-release.apk",
+        },
+      ],
+      IOS: [
+        {
+          title: "iOS-Notes.txt",
+          url: "https://github.com/yourname/yourrepo/raw/main/ios/notes.txt",
+        },
+      ],
+    };
+
+    // 头像显示逻辑，失败时显示首字母
+    function createAvatar(username, alt, size = 64) {
+      const container = document.createElement("div");
+      container.className = "avatar";
+      container.style.width = size + "px";
+      container.style.height = size + "px";
+
+      const img = document.createElement("img");
+      img.src = `https://t.me/i/userpic/320/${username}.jpg`;
+      img.alt = alt || username;
+
+      // 图片加载失败时用首字母代替
+      img.onerror = () => {
+        container.textContent = (alt || username || "?").slice(0, 2).toUpperCase();
+        img.style.display = "none";
+      };
+
+      container.appendChild(img);
+      return container;
+    }
+
+    // 创建联系人卡片
+    function createContactCard({ username, displayName, note }) {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = `https://t.me/${username}`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      card.appendChild(createAvatar(username, displayName, 64));
+
+      const info = document.createElement("div");
+      info.className = "info";
+
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = displayName;
+      info.appendChild(name);
+
+      const user = document.createElement("div");
+      user.className = "username";
+      user.textContent = "@" + username;
+      info.appendChild(user);
+
+      if (note) {
+        const noteEl = document.createElement("div");
+        noteEl.className = "note";
+        noteEl.textContent = note;
+        info.appendChild(noteEl);
+      }
+
+      card.appendChild(info);
+
+      const action = document.createElement("div");
+      action.className = "action";
+      action.textContent = "打开";
+      card.appendChild(action);
+
+      return card;
+    }
+
+    // 创建群组卡片（结构类似联系人，但无备注）
+    function createGroupCard({ username, displayName }) {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = `https://t.me/${username}`;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      card.appendChild(createAvatar(username, displayName, 64));
+
+      const info = document.createElement("div");
+      info.className = "info";
+
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = displayName;
+      info.appendChild(name);
+
+      const user = document.createElement("div");
+      user.className = "username";
+      user.textContent = "@" + username;
+      info.appendChild(user);
+
+      card.appendChild(info);
+
+      const action = document.createElement("div");
+      action.className = "action";
+      action.textContent = "加入";
+      card.appendChild(action);
+
+      return card;
+    }
+
+    // 创建软件库卡片
+    function createLibraryCard(category, { title, url }) {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = url;
+      card.target = "_blank";
+      card.rel = "noopener noreferrer";
+
+      // 头像改成类别首字母，颜色区分，简单风格
+      const avatar = document.createElement("div");
+      avatar.className = "avatar";
+      avatar.style.width = "64px";
+      avatar.style.height = "64px";
+      avatar.style.backgroundColor = "#e0e7ff"; // 浅蓝背景
+      avatar.style.color = "#4338ca"; // 深蓝文字
+      avatar.textContent = category.charAt(0).toUpperCase();
+
+      card.appendChild(avatar);
+
+      const info = document.createElement("div");
+      info.className = "info";
+
+      const name = document.createElement("div");
+      name.className = "name";
+      name.textContent = title;
+      info.appendChild(name);
+
+      const user = document.createElement("div");
+      user.className = "username";
+      user.textContent = url;
+      user.style.fontSize = "0.7rem";
+      user.style.color = "#6b7280";
+      user.style.whiteSpace = "nowrap";
+      user.style.overflow = "hidden";
+      user.style.textOverflow = "ellipsis";
+      info.appendChild(user);
+
+      card.appendChild(info);
+
+      const action = document.createElement("div");
+      action.className = "action";
+      action.textContent = "下载";
+      card.appendChild(action);
+
+      return card;
+    }
+
+    // 渲染所有
+    function renderAll() {
+      const contactsGrid = document.getElementById("contactsGrid");
+      contactsGrid.innerHTML = "";
+      contacts.forEach(c => contactsGrid.appendChild(createContactCard(c)));
+
+      const groupsGrid = document.getElementById("groupsGrid");
+      groupsGrid.innerHTML = "";
+      groups.forEach(g => groupsGrid.appendChild(createGroupCard(g)));
+
+      const libraryGrid = document.getElementById("libraryGrid");
+      libraryGrid.innerHTML = "";
+      for (const category in library) {
+        library[category].forEach(item => {
+          libraryGrid.appendChild(createLibraryCard(category, item));
+        });
+      }
+    }
+
+    renderAll();
+  </script>
 </body>
 </html>

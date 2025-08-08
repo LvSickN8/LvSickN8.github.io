@@ -358,7 +358,7 @@
       avatar.className = "avatar";
       avatar.style.width = "48px";
       avatar.style.height = "48px";
-      avatar.style.backgroundColor = "#c7d2fe"; /* 更蓝一点 */
+      avatar.style.backgroundColor = "#c7d2fe"; /* 蓝色调 */
       avatar.style.color = "#4338ca";
       avatar.textContent = category.charAt(0).toUpperCase();
 
@@ -384,10 +384,7 @@
 
       card.appendChild(info);
 
-      const action = document.createElement("div");
-      action.className = "action";
-      action.textContent = "下载";
-      card.appendChild(action);
+      // 取消下载按钮显示，故无action元素
 
       return card;
     }

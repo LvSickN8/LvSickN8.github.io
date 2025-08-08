@@ -17,7 +17,7 @@
       flex-direction: column;
     }
     .container {
-      max-width: 900px;
+      max-width: 960px; /* 稍微加宽，方便3列布局 */
       margin: 0 auto;
       padding: 2rem 1rem 4rem;
       flex-grow: 1;
@@ -61,11 +61,12 @@
       margin-bottom: 1rem;
     }
 
-    /* 卡片网格 */
+    /* 卡片网格 - 3列 */
     .grid {
       display: grid;
       gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      /* minmax(280px,1fr) 保证最大3列，卡片最小宽度280px */
     }
 
     /* 卡片样式 */
@@ -73,7 +74,7 @@
       background: white;
       border-radius: 12px;
       box-shadow: 0 2px 6px rgb(0 0 0 / 0.07);
-      padding: 1rem 1.25rem;
+      padding: 0.75rem 1rem;
       display: flex;
       align-items: center;
       gap: 1rem;
@@ -82,6 +83,7 @@
       user-select: none;
       text-decoration: none;
       color: inherit;
+      min-height: 70px; /* 高度稍微缩小 */
     }
     .card:hover,
     .card:focus {
@@ -93,13 +95,13 @@
     /* 头像 */
     .avatar {
       flex-shrink: 0;
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
       background: #e5e7eb;
       color: #6b7280;
       font-weight: 700;
-      font-size: 28px;
+      font-size: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -119,24 +121,31 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: 0.1rem;
+      overflow: hidden;
     }
     .info .name {
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       color: #111;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     .info .username {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #6b7280;
       user-select: text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .info .note {
-      font-size: 0.8rem;
+      font-size: 0.7rem;
       color: #9ca3af;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* 动作提示 */
@@ -146,6 +155,9 @@
       user-select: none;
       white-space: nowrap;
       transition: color 0.3s;
+      flex-shrink: 0;
+      min-width: 30px;
+      text-align: right;
     }
     .card:hover .action,
     .card:focus .action {
@@ -162,19 +174,31 @@
       user-select: none;
     }
 
-    /* 响应式微调 */
-    @media (max-width: 500px) {
-      .card {
-        flex-direction: column;
-        align-items: flex-start;
+    /* 响应式调整 */
+    @media (max-width: 950px) {
+      .grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       }
-      .avatar {
-        width: 56px;
-        height: 56px;
+    }
+    @media (max-width: 640px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        min-height: auto;
       }
       .action {
-        margin-top: 0.5rem;
-        align-self: flex-end;
+        min-width: auto;
+        text-align: left;
+        margin-top: 0.2rem;
+      }
+      .card {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+      }
+      .info {
+        white-space: normal;
       }
     }
   </style>
@@ -191,25 +215,19 @@
     <!-- 联系人 -->
     <section id="contacts">
       <h2>联系人</h2>
-      <div class="grid" id="contactsGrid">
-        <!-- JS 会插入联系人卡片 -->
-      </div>
+      <div class="grid" id="contactsGrid"></div>
     </section>
 
     <!-- 群组 -->
     <section id="groups">
       <h2>群组</h2>
-      <div class="grid" id="groupsGrid">
-        <!-- JS 会插入群组卡片 -->
-      </div>
+      <div class="grid" id="groupsGrid"></div>
     </section>
 
     <!-- 软件库 -->
     <section id="library">
       <h2>软件库</h2>
-      <div class="grid" id="libraryGrid">
-        <!-- JS 会插入软件卡片 -->
-      </div>
+      <div class="grid" id="libraryGrid"></div>
     </section>
   </div>
 
@@ -262,7 +280,7 @@
     };
 
     // 头像显示逻辑，失败时显示首字母
-    function createAvatar(username, alt, size = 64) {
+    function createAvatar(username, alt, size = 48) {
       const container = document.createElement("div");
       container.className = "avatar";
       container.style.width = size + "px";
@@ -290,7 +308,7 @@
       card.target = "_blank";
       card.rel = "noopener noreferrer";
 
-      card.appendChild(createAvatar(username, displayName, 64));
+      card.appendChild(createAvatar(username, displayName, 48));
 
       const info = document.createElement("div");
       info.className = "info";
@@ -322,7 +340,7 @@
       return card;
     }
 
-    // 创建群组卡片（结构类似联系人，但无备注）
+    // 创建群组卡片
     function createGroupCard({ username, displayName }) {
       const card = document.createElement("a");
       card.className = "card";
@@ -330,7 +348,7 @@
       card.target = "_blank";
       card.rel = "noopener noreferrer";
 
-      card.appendChild(createAvatar(username, displayName, 64));
+      card.appendChild(createAvatar(username, displayName, 48));
 
       const info = document.createElement("div");
       info.className = "info";
@@ -366,8 +384,8 @@
       // 头像改成类别首字母，颜色区分，简单风格
       const avatar = document.createElement("div");
       avatar.className = "avatar";
-      avatar.style.width = "64px";
-      avatar.style.height = "64px";
+      avatar.style.width = "48px";
+      avatar.style.height = "48px";
       avatar.style.backgroundColor = "#e0e7ff"; // 浅蓝背景
       avatar.style.color = "#4338ca"; // 深蓝文字
       avatar.textContent = category.charAt(0).toUpperCase();
@@ -402,7 +420,7 @@
       return card;
     }
 
-    // 渲染所有
+    // 渲染所有内容
     function renderAll() {
       const contactsGrid = document.getElementById("contactsGrid");
       contactsGrid.innerHTML = "";

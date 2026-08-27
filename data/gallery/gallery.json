@@ -1,0 +1,21 @@
+{
+  "albums": [
+    {
+      "id": "photo-1787809648385-遇见神鹿",
+      "title": "遇见神鹿",
+      "caption": "",
+      "place": "",
+      "date": "2026-08-27",
+      "src": "data/gallery/originals/2026-08-27-遇见神鹿.jpg",
+      "path": "data/gallery/originals/2026-08-27-遇见神鹿.jpg",
+      "fileName": "2026-08-27-遇见神鹿.jpg",
+      "fileSize": 411075,
+      "aspectRatio": 1,
+      "size": "square",
+      "palette": [
+        "#d8c7ff",
+        "#b8d9ff"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "name": "浮光 · Personal Space",
+  "short_name": "浮光",
+  "description": "一个属于自己的 Liquid Glass 个人数字生命空间。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F5F0FF",
+  "theme_color": "#C4AEFF",
+  "categories": ["lifestyle", "productivity", "photo"],
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "assets/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {"name": "写日记", "url": "./#diary", "description": "记录今天的自己"},
+    {"name": "看照片", "url": "./#gallery", "description": "打开照片档案"},
+    {"name": "问浮光 AI", "url": "./#ai", "description": "生成个人回声"}
+  ]
+}

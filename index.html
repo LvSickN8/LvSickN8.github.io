@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#F5F0FF" />
+    <meta name="description" content="浮光 · Personal Space，一个融合主页、日记、照片、知识库、人生时间轴与 AI 记忆助手的个人数字生命空间。" />
+    <title>浮光 · Personal Space</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/tokens.css" />
+    <link rel="stylesheet" href="css/glass.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/animations.css" />
+  </head>
+  <body>
+    <div class="ambient" aria-hidden="true">
+      <span class="orb orb-a"></span>
+      <span class="orb orb-b"></span>
+      <span class="orb orb-c"></span>
+      <span class="orb orb-d"></span>
+      <span class="grain"></span>
+    </div>
+
+    <a class="skip-link" href="#app">跳到主要内容</a>
+
+    <header class="shell-header glass glass-l3" data-reveal>
+      <a class="brand" href="#home" aria-label="浮光首页">
+        <span class="brand-mark">浮</span>
+        <span>
+          <strong>浮光</strong>
+          <small>Personal Space</small>
+        </span>
+      </a>
+      <nav class="nav" id="nav" aria-label="主导航"></nav>
+      <button class="icon-button" id="themeButton" type="button" aria-label="切换时间氛围">☾</button>
+    </header>
+
+    <dialog class="auth-dialog glass glass-l4" id="authDialog">
+      <form class="auth-form" id="authForm">
+        <div class="dialog-head">
+          <div>
+            <small>Access Mode</small>
+            <h2>进入浮光</h2>
+          </div>
+        </div>
+        <p class="muted">填写 GitHub 仓库和 Token 后可发布、删除和同步；跳过则以访客身份浏览，不能修改内容。Token 只保存在当前浏览器。</p>
+        <label>GitHub Owner<input name="owner" placeholder="github 用户名" autocomplete="username" /></label>
+        <label>仓库名<input name="repo" placeholder="仓库名" /></label>
+        <label>分支<input name="branch" placeholder="main" /></label>
+        <label>GitHub Token<input name="token" type="password" placeholder="fine-grained token，需 Contents 读写权限" autocomplete="current-password" /></label>
+        <menu>
+          <button class="ghost-button" id="visitorButton" type="button">访客浏览</button>
+          <button class="liquid-button" type="submit">进入管理模式</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <main id="app" class="app-shell" tabindex="-1"></main>
+
+    <aside class="memory-dock glass glass-l3" id="memoryDock" aria-live="polite">
+      <button class="dock-toggle" id="dockToggle" type="button" aria-expanded="false">
+        <span>浮光 AI</span>
+        <strong>记忆助手</strong>
+      </button>
+      <div class="dock-body" id="dockBody">
+        <p>我会从日记、照片描述、标签与时间中，帮你重新理解过去的自己。</p>
+        <div class="ai-output" id="aiOutput">选择“生成本月回声”，查看一段温柔总结。</div>
+        <button class="liquid-button" id="aiButton" type="button">生成本月回声</button>
+      </div>
+    </aside>
+
+    <section class="music-player glass glass-l3 is-collapsed" id="musicPlayer" aria-label="音乐播放器">
+      <button class="player-toggle" id="playerToggle" type="button" aria-expanded="false">
+        <span class="vinyl">♪</span>
+        <span class="now-playing">
+          <small>正在播放</small>
+          <strong id="trackTitle">Lavender Room</strong>
+        </span>
+      </button>
+      <div class="player-panel" id="playerPanel">
+        <audio id="audioElement" preload="metadata"></audio>
+        <div class="cover-art">✦</div>
+        <div>
+          <h3 id="panelTrackTitle">Lavender Room</h3>
+          <p id="trackArtist">浮光内置歌单</p>
+          <small class="muted" id="trackMeta">内置示例 · 可上传 FLAC / WAV / AIFF / ALAC</small>
+        </div>
+        <div class="progress" id="playerProgress"><span style="width: 0%"></span></div>
+        <div class="player-actions" aria-label="播放器控制">
+          <button type="button" data-player-action="prev">⏮</button>
+          <button type="button" class="play" data-player-action="play">▶</button>
+          <button type="button" data-player-action="next">⏭</button>
+        </div>
+        <div class="music-tools">
+          <label class="upload-pill publish-only">
+            上传音乐
+            <input id="musicUpload" type="file" accept="audio/*,.flac,.wav,.aiff,.aif,.alac,.m4a,.ape,.dsf,.dff" multiple />
+          </label>
+          <label class="sync-toggle publish-only"><input id="musicSyncGithub" type="checkbox" /> 同步 GitHub</label>
+        </div>
+        <div class="track-list" id="trackList" aria-label="我的歌单"></div>
+      </div>
+    </section>
+
+    <button class="fab glass glass-l2 publish-only" id="captureButton" type="button" aria-label="记录此刻">＋</button>
+
+    <dialog class="capture-dialog glass glass-l4" id="captureDialog">
+      <form method="dialog" class="capture-form" id="captureForm">
+        <div class="dialog-head">
+          <div>
+            <small>Capture</small>
+            <h2>记录此刻</h2>
+          </div>
+          <div class="dialog-actions">
+            <button class="liquid-button compact-submit" id="captureSubmitTop" type="submit">发布</button>
+            <button class="icon-button" id="captureClose" type="button" aria-label="关闭记录窗口">×</button>
+          </div>
+        </div>
+        <label>标题<input name="title" placeholder="今天发生了什么？" required /></label>
+        <label>内容<textarea name="content" rows="5" placeholder="写下一段会被未来的你感谢的话。"></textarea></label>
+        <label>心情
+          <select name="mood">
+            <option>🌙 平静</option>
+            <option>🌸 温柔</option>
+            <option>☀️ 明亮</option>
+            <option>🌧️ 低落</option>
+            <option>🔥 专注</option>
+          </select>
+        </label>
+        <div class="form-grid">
+          <label>地点<input name="location" placeholder="例如：岷县" /></label>
+          <label>标签<input name="tags" placeholder="逗号分隔" /></label>
+        </div>
+        <label>附件（自动分类 / 自动命名）<input name="file" type="file" accept="image/*,audio/*,.flac,.wav,.aiff,.aif,.alac,.m4a,.ape,.dsf,.dff,.md,.json,.txt" /></label>
+        <p class="muted" id="classifyHint">未选择文件时，会按日记自动命名为 YYYY-MM-DD-标题.md</p>
+        <label>同步到 GitHub
+          <select name="sync">
+            <option value="local">先保存到本地草稿</option>
+            <option value="github">保存并上传 GitHub</option>
+          </select>
+        </label>
+        <menu>
+          <button class="ghost-button" id="captureCancel" type="button">取消</button>
+          <button class="liquid-button" id="captureSubmit" type="submit">发布</button>
+        </menu>
+      </form>
+    </dialog>
+
+    <script src="js/app.js" type="module"></script>
+  </body>
+</html>

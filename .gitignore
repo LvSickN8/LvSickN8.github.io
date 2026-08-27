@@ -1,0 +1,15 @@
+# Local-only secrets and editor files
+.env
+.dev.vars
+*.local
+.DS_Store
+.vscode/
+.idea/
+
+# Wrangler / Node
+node_modules/
+.wrangler/
+dist/
+
+# Generated export bundles
+exports/

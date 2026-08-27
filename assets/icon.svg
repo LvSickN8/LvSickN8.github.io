@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="浮光">
+  <defs>
+    <linearGradient id="g" x1="96" y1="64" x2="416" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f8f2ff"/>
+      <stop offset="0.48" stop-color="#c8b6ff"/>
+      <stop offset="1" stop-color="#9ed8ff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#8d79ff" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#f6f0ff"/>
+  <circle cx="256" cy="256" r="166" fill="url(#g)" filter="url(#shadow)"/>
+  <path d="M165 272c62-130 147-130 182 0 12 45-22 90-91 90s-112-45-91-90Z" fill="rgba(255,255,255,.72)"/>
+  <path d="M157 232c76 26 130 26 198 0" fill="none" stroke="#fff" stroke-width="22" stroke-linecap="round" opacity=".86"/>
+  <text x="256" y="287" text-anchor="middle" font-family="serif" font-size="120" font-weight="700" fill="#6654c8">浮</text>
+</svg>

@@ -1,0 +1,17 @@
+{
+  "name": "浮光",
+  "nickname": "阿光",
+  "signature": "把日子过成可以被回看的光。",
+  "location": "甘肃 · 岷县",
+  "device": "iPhone · Mac · 纸质笔记本",
+  "keywords": ["记录", "整理", "连接", "回忆", "理解自己"],
+  "interests": ["Physics", "摄影", "古典乐", "山野", "写作"],
+  "welcome": "欢迎回来。这里不是网站，是你的数字房间。",
+  "stats": {
+    "days": 0,
+    "since": "2019-02-17",
+    "diaries": 214,
+    "photos": 1860,
+    "moods": 412
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "fuguang",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "verify": "node scripts/verify-project.mjs"
+  }
+}

@@ -1,0 +1,133 @@
+.ambient {
+  position: fixed;
+  inset: -15vh -15vw;
+  overflow: hidden;
+  z-index: -2;
+  pointer-events: none;
+  filter: saturate(1.06);
+}
+
+.orb {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  filter: blur(34px);
+  opacity: 0.82;
+  transform: translate3d(0, 0, 0);
+  mix-blend-mode: screen;
+}
+
+.orb-a { width: 42vw; height: 42vw; left: 2vw; top: 3vh; background: var(--orb-a); animation: drift-a 48s var(--ease-glass) infinite alternate; }
+.orb-b { width: 38vw; height: 38vw; right: 0; top: 8vh; background: var(--orb-b); animation: drift-b 56s var(--ease-glass) infinite alternate; }
+.orb-c { width: 48vw; height: 48vw; left: 24vw; bottom: -10vh; background: var(--orb-c); animation: drift-c 60s var(--ease-glass) infinite alternate; }
+.orb-d { width: 28vw; height: 28vw; right: 20vw; bottom: 20vh; background: var(--orb-d); animation: drift-d 42s var(--ease-glass) infinite alternate; }
+
+.grain {
+  position: fixed;
+  inset: 0;
+  opacity: 0.16;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.72' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.28'/%3E%3C/svg%3E");
+}
+
+.glass {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-float);
+  isolation: isolate;
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.58), rgba(255,255,255,0.08) 38%, rgba(255,255,255,0.18) 100%);
+  opacity: 0.72;
+  z-index: -1;
+}
+
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  pointer-events: none;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(255,255,255,0.28), transparent 38%);
+  z-index: -1;
+}
+
+.glass-l1 { background: var(--glass-l1-bg); backdrop-filter: blur(15px) saturate(1.35); -webkit-backdrop-filter: blur(15px) saturate(1.35); }
+.glass-l2 { background: var(--glass-l2-bg); backdrop-filter: blur(25px) saturate(1.45); -webkit-backdrop-filter: blur(25px) saturate(1.45); }
+.glass-l3 { background: var(--glass-l3-bg); backdrop-filter: blur(40px) saturate(1.6); -webkit-backdrop-filter: blur(40px) saturate(1.6); }
+.glass-l4 { background: var(--glass-l4-bg); backdrop-filter: blur(60px) saturate(1.7); -webkit-backdrop-filter: blur(60px) saturate(1.7); }
+
+.card {
+  border-radius: var(--radius-large);
+  padding: clamp(18px, 3vw, 30px);
+  transition: transform 0.5s var(--ease-glass), box-shadow 0.5s var(--ease-glass), border-color 0.5s var(--ease-glass);
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-deep);
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  background: var(--glass-l1-bg);
+  border: 1px solid var(--line);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.liquid-button, .ghost-button, .icon-button {
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.42);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  transition: transform 0.35s var(--ease-glass), background 0.35s var(--ease-glass), box-shadow 0.35s var(--ease-glass);
+}
+
+.liquid-button {
+  min-height: 46px;
+  padding: 0 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, rgba(255,255,255,0.76), rgba(216,200,255,0.52));
+  box-shadow: var(--shadow-soft);
+}
+
+.ghost-button { min-height: 42px; padding: 0 16px; background: rgba(255,255,255,0.2); }
+.icon-button { width: 44px; height: 44px; display: inline-grid; place-items: center; font-size: 20px; }
+.liquid-button:hover, .ghost-button:hover, .icon-button:hover { transform: translateY(-2px) scale(1.02); box-shadow: var(--shadow-soft); }
+.liquid-button:focus-visible, .ghost-button:focus-visible, .icon-button:focus-visible, .danger-button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible {
+  outline: 2px solid rgba(169, 139, 255, 0.82);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 1000;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--cloud-white);
+  transform: translateY(-150%);
+}
+.skip-link:focus { transform: translateY(0); }

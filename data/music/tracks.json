@@ -1,4 +1,16 @@
 {
   "nowPlaying": 0,
-  "tracks": []
+  "tracks": [
+    {
+      "id": "track-1787958496608-2c40rxu01oe-相思-毛阿敏-6844452-2000-flac",
+      "title": "相思-毛阿敏-6844452-2000",
+      "artist": "我的上传",
+      "mood": "无损",
+      "duration": "3:01",
+      "format": "FLAC",
+      "size": 18099451,
+      "src": "data/music/files/2026-08-28-相思-毛阿敏-6844452-2000.flac",
+      "fileName": "2026-08-28-相思-毛阿敏-6844452-2000.flac"
+    }
+  ]
 }
